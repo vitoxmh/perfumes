@@ -107,6 +107,23 @@ export const users = pgTable("users", {
 
 export type User = typeof users.$inferSelect;
 
+/**
+ * Sesiones activas del lado servidor (revocables).
+ * El id es el HMAC(AUTH_SECRET, token) de la cookie: un dump de la BD no basta
+ * para reconstruir tokens, y revocar una fila invalida la sesión al instante.
+ */
+export const sessions = pgTable("sessions", {
+  id: text("id").primaryKey(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  expiresAt: timestamp("expires_at").notNull(),
+  revokedAt: timestamp("revoked_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type Session = typeof sessions.$inferSelect;
+
 /** Banners del carrusel principal (hero) de la home. */
 export const banners = pgTable("banners", {
   id: serial("id").primaryKey(),

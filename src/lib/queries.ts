@@ -1,5 +1,6 @@
 import { and, asc, desc, eq, gte, ilike, lte, or, sql, type SQL } from "drizzle-orm";
 import { db } from "@/db";
+import { escapeLike } from "@/lib/validation";
 import { banners, brands, products, type Product } from "@/db/schema";
 
 /** Recorre toda la cadena de causas de un error y devuelve su texto completo. */
@@ -76,7 +77,8 @@ function buildWhere(f: CatalogFilters): SQL | undefined {
     if (r.max !== undefined) conds.push(lte(products.price, r.max));
   }
   if (f.q) {
-    const term = `%${f.q}%`;
+    // El usuario no debe inyectar nuestros comodines LIKE/ILIKE (% _ \).
+    const term = `%${escapeLike(f.q)}%`;
     conds.push(or(ilike(products.name, term), ilike(brands.name, term)));
   }
 

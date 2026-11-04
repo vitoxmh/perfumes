@@ -104,9 +104,9 @@ export function Header({ brands, user }: { brands: Brand[]; user: SessionUser | 
           {user ? (
             <form action={logoutUser} className="header__user">
               <Link
-                href="/carrito"
+                href="/mi-cuenta"
                 className="header__nav-user"
-                title={`Conectado como ${user.name}`}
+                title={`Mi cuenta — conectado como ${user.name}`}
               >
                 👋 {user.name.split(" ")[0]}
               </Link>

@@ -6,6 +6,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { brands, banners, orderItems, orders, products } from "@/db/schema";
 import { requireAdminUser } from "@/lib/auth";
+import { safeInternalPath } from "@/lib/validation";
 
 const GENDERS = ["mujer", "hombre", "unisex", "set"];
 const KINDS = ["perfume", "body-mist", "deodorant-corporal", "deodorant-ambiental"];
@@ -195,13 +196,16 @@ export async function setStockMany(formData: FormData): Promise<void> {
   await requireAdminUser();
 
   const entries = Array.from(formData.entries()).filter(([key]) => key.startsWith("stock-"));
-  for (const [key, value] of entries) {
-    const id = Number(key.slice("stock-".length));
-    const stock = Number(value);
-    if (Number.isInteger(id) && id > 0 && Number.isFinite(stock) && stock >= 0) {
-      await db.update(products).set({ stock: Math.trunc(stock) }).where(eq(products.id, id));
-    }
-  }
+  await Promise.all(
+    entries
+      .map(([key, value]) => ({ id: Number(key.slice("stock-".length)), stock: Number(value) }))
+      .filter(
+        (e) => Number.isInteger(e.id) && e.id > 0 && Number.isFinite(e.stock) && e.stock >= 0
+      )
+      .map((e) =>
+        db.update(products).set({ stock: Math.trunc(e.stock) }).where(eq(products.id, e.id))
+      )
+  );
 
   revalidatePath("/", "layout");
   redirect("/admin/stock?ok=1");
@@ -228,9 +232,9 @@ function cleanImageUrl(formData: FormData): string | null {
 }
 
 function safeHref(raw: string): string | null {
-  const href = raw.trim();
   // Solo rutas internas: el carrusel es público, sin links externos.
-  return href.startsWith("/") && !href.startsWith("//") && href.length < 300 ? href : null;
+  const href = safeInternalPath(raw);
+  return href || null;
 }
 
 export async function createBanner(formData: FormData): Promise<void> {

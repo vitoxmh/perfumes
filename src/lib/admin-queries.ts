@@ -1,5 +1,6 @@
 import { and, asc, desc, eq, ilike, lte, or, sql, inArray } from "drizzle-orm";
 import { db } from "@/db";
+import { escapeLike } from "@/lib/validation";
 import { banners, brands, orderItems, orders, products, type Banner, type Order, type OrderItem, type Product } from "@/db/schema";
 
 export type AdminStats = {
@@ -12,6 +13,7 @@ export type AdminStats = {
 };
 
 export async function adminStats(): Promise<AdminStats> {
+  try {
   const ops = await Promise.all([
     db.select({ n: sql<number>`count(*)::int` }).from(products),
     db.select({ n: sql<number>`count(*)::int` }).from(products).where(eq(products.stock, 0)),
@@ -35,17 +37,23 @@ export async function adminStats(): Promise<AdminStats> {
     totalOrders: ops[4][0].n,
     revenue: ops[5][0].sum,
   };
+  } catch (error) {
+    // Si la DB no responde, el panel sigue cargando con las tarjetas en cero.
+    console.error("[admin] stats no disponibles:", error);
+    return { totalProducts: 0, outOfStock: 0, lowStock: 0, pendingOrders: 0, totalOrders: 0, revenue: 0 };
+  }
 }
 
 export type AdminProduct = { product: Product; brandName: string };
 
 export async function adminProducts(q?: string): Promise<AdminProduct[]> {
   const term = q?.trim();
+  const likeTerm = term ? `%${escapeLike(term)}%` : undefined;
   const rows = await db
     .select({ p: products, brandName: brands.name })
     .from(products)
     .leftJoin(brands, eq(products.brandId, brands.id))
-    .where(term ? or(ilike(products.name, `%${term}%`), ilike(brands.name, `%${term}%`)) : undefined)
+    .where(likeTerm ? or(ilike(products.name, likeTerm), ilike(brands.name, likeTerm)) : undefined)
     .orderBy(desc(products.id));
   return rows.map((r) => ({ product: r.p, brandName: r.brandName ?? "" }));
 }

@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { orders } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 import { formatCLP } from "@/lib/format";
+import { ORDER_CODE_RE, clientIpKey, rateLimit } from "@/lib/validation";
 
 type RawSearch = Promise<Record<string, string | string[] | undefined>>;
 
@@ -14,11 +15,15 @@ async function searchOrder(formData: FormData) {
 
 export default async function TrackingPage({ searchParams }: { searchParams: RawSearch }) {
   const sp = await searchParams;
-  const code = (Array.isArray(sp.code) ? sp.code[0] : sp.code)?.toUpperCase().trim();
+  const raw = (Array.isArray(sp.code) ? sp.code[0] : sp.code)?.toUpperCase().trim() ?? "";
 
-  const order = code
-    ? (await db.select().from(orders).where(and(eq(orders.code, code))).limit(1))[0]
-    : undefined;
+  // Búsquedas públicas de códigos: máx. 40 por IP cada 10 min (frena enumeración).
+  const limited = !rateLimit(await clientIpKey("seguimiento"), 40, 10 * 60 * 1000);
+
+  const order =
+    !limited && ORDER_CODE_RE.test(raw)
+      ? (await db.select().from(orders).where(and(eq(orders.code, raw))).limit(1))[0]
+      : undefined;
 
   return (
     <div className="page page--narrow tracking">
@@ -31,7 +36,7 @@ export default async function TrackingPage({ searchParams }: { searchParams: Raw
         <input
           name="code"
           placeholder="LP-A1B2C3"
-          defaultValue={code}
+          defaultValue={raw}
           className="tracking__input"
         />
         <button type="submit" className="btn">
@@ -39,9 +44,19 @@ export default async function TrackingPage({ searchParams }: { searchParams: Raw
         </button>
       </form>
 
-      {code && !order ? (
+      {limited ? (
         <p className="tracking__error">
-          No encontramos ningún pedido con el código “{code}”.
+          Demasiadas búsquedas seguidas. Espera unos minutos e intenta de nuevo.
+        </p>
+      ) : null}
+
+      {raw && !ORDER_CODE_RE.test(raw) ? (
+        <p className="tracking__error">El código no tiene el formato esperado (ej.: LP-A1B2C3).</p>
+      ) : null}
+
+      {!limited && ORDER_CODE_RE.test(raw) && !order ? (
+        <p className="tracking__error">
+          No encontramos ningún pedido con el código &ldquo;{raw}&rdquo;.
         </p>
       ) : null}
 

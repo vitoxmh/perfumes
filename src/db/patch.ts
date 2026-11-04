@@ -46,6 +46,17 @@ async function main() {
     );
   `);
 
+  console.info("Creando tabla sessions (si no existe)…");
+  await sql.query(`
+    CREATE TABLE IF NOT EXISTS sessions (
+      id TEXT PRIMARY KEY,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      expires_at TIMESTAMP NOT NULL,
+      revoked_at TIMESTAMP,
+      created_at TIMESTAMP NOT NULL DEFAULT now()
+    );
+  `);
+
   const adminEmail = (process.env.ADMIN_EMAIL ?? "admin@perfumes.cl").toLowerCase().trim();
   const adminPassword = process.env.ADMIN_PASSWORD ?? "admin123";
   const adminName = process.env.ADMIN_NAME ?? "Administrador Perfumes.cl";

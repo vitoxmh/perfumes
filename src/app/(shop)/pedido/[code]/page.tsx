@@ -5,6 +5,8 @@ import { db } from "@/db";
 import { orderItems, orders } from "@/db/schema";
 import { asc, eq } from "drizzle-orm";
 import { formatCLP } from "@/lib/format";
+import { getSessionUser } from "@/lib/auth";
+import { ORDER_CODE_RE, clientIpKey, rateLimit } from "@/lib/validation";
 
 type Params = Promise<{ code: string }>;
 type RawSearch = Promise<Record<string, string | string[] | undefined>>;
@@ -19,8 +21,25 @@ export default async function OrderPage({
   const { code } = await params;
   const sp = await searchParams;
   const isNew = (Array.isArray(sp.nuevo) ? sp.nuevo[0] : sp.nuevo) === "1";
+  const safeCode = code.toUpperCase();
 
-  const [order] = await db.select().from(orders).where(eq(orders.code, code)).limit(1);
+  if (!ORDER_CODE_RE.test(safeCode)) notFound();
+
+  // Búsquedas públicas de códigos: máx. 60 por IP cada 10 min (frena enumeración).
+  const limited = !rateLimit(await clientIpKey("pedido"), 60, 10 * 60 * 1000);
+
+  const [order] = limited ? [] : await db.select().from(orders).where(eq(orders.code, safeCode)).limit(1);
+  if (limited) {
+    return (
+      <div className="page page--order">
+        <div className="page-empty">
+          <p className="page-empty__title">
+            Demasiadas consultas seguidas. Espera unos minutos e intenta de nuevo.
+          </p>
+        </div>
+      </div>
+    );
+  }
   if (!order) notFound();
   const items = await db
     .select()
@@ -50,25 +69,8 @@ export default async function OrderPage({
           <span className="order-card__status">{order.status}</span>
         </div>
 
-        <dl className="order-card__customer-grid">
-          <div>
-            <dt className="order-card__dt">Cliente</dt>
-            <dd className="order-card__dd-strong">{order.customerName}</dd>
-            <dd className="order-card__dd-soft">{order.customerEmail}</dd>
-            <dd className="order-card__dd-soft">{order.customerPhone}</dd>
-          </div>
-          <div>
-            <dt className="order-card__dt">Entrega</dt>
-            <dd className="order-card__dd-strong order-card__dd-strong--capitalize">
-              {order.deliveryMethod === "retiro" ? "Retiro en tienda" : "Despacho a domicilio"}
-            </dd>
-            {order.address ? (
-              <dd className="order-card__dd-soft">
-                {order.address}, {order.city}, {order.region}
-              </dd>
-            ) : null}
-          </div>
-        </dl>
+        {/* Nota: los datos personales del cliente (nombre/contacto/dirección)
+            no se exponen aquí: esta vista es pública para quien tenga el código. */}
 
         <table className="order-table">
           <thead>
@@ -113,6 +115,14 @@ export default async function OrderPage({
         <Link href="/seguimiento" className="order-help__link">
           Consulta el estado de tu pedido aquí
         </Link>
+        {(await getSessionUser())?.role ? (
+          <>
+            {" · "}
+            <Link href="/mi-cuenta" className="order-help__link">
+              Ver tus pedidos en tu cuenta
+            </Link>
+          </>
+        ) : null}
       </p>
     </div>
   );
