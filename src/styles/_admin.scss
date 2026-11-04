@@ -1,0 +1,755 @@
+// ---------------------------------------------
+// Blocks: .admin (marco del panel), .adminnav, .admin-cards,
+// .admin-card, .admin-table, .adminform, .imgup, .login, utilidades
+// ---------------------------------------------
+@use "variables" as v;
+@use "mixins" as m;
+
+.admin {
+  max-width: 80rem;
+  margin-inline: auto;
+  padding: v.$space-8 v.$container-pad;
+  padding-top: v.$space-6;
+
+  &__head {
+    background: v.$color-dark;
+    color: v.$color-on-dark;
+    border-radius: v.$radius-lg;
+  }
+
+  &__head-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: v.$space-4;
+    padding: v.$space-4 v.$space-6;
+    max-width: v.$max-width;
+    margin-inline: auto;
+  }
+
+  &__brand {
+    font-weight: v.$fw-black;
+    letter-spacing: 0.08em;
+    font-size: v.$fs-md;
+    margin-right: auto;
+  }
+
+  &__brand-accent {
+    color: v.$color-on-dark-gold;
+  }
+
+  &__body {
+    margin-top: v.$space-6;
+    display: grid;
+    gap: v.$space-5;
+  }
+
+  &__title {
+    font-size: v.$fs-2xl;
+    font-weight: v.$fw-black;
+    letter-spacing: -0.025em;
+  }
+
+  &__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: v.$space-3;
+  }
+
+  &__row-actions {
+    display: flex;
+    gap: v.$space-2;
+  }
+}
+
+// Navegación por pestañas del panel
+.adminnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: v.$space-1;
+
+  &__link {
+    padding: 0.375rem v.$space-3;
+    border-radius: v.$radius-pill;
+    font-size: v.$fs-md;
+    font-weight: v.$fw-bold;
+    color: v.$color-on-dark-soft;
+
+    &:hover {
+      color: v.$color-white;
+      background: v.$color-dark-raised;
+    }
+  }
+
+  &__link--active {
+    background: v.$color-on-dark-gold;
+    color: v.$color-dark;
+
+    &:hover {
+      color: v.$color-dark;
+      background: v.$color-on-dark-gold;
+    }
+  }
+}
+
+// Tarjetas de estadísticas del resumen
+.admin-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: v.$space-3;
+
+  @include m.respond-to(sm) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  &__card {
+    display: grid;
+    gap: v.$space-1;
+    padding: v.$space-5;
+    border: 1px solid v.$color-line;
+    border-radius: v.$radius-md;
+    background: v.$color-surface;
+
+    &:hover {
+      box-shadow: v.$shadow-card;
+    }
+  }
+
+  &__card--warn {
+    border-color: #fbbf24;
+    background: #fffbeb;
+  }
+
+  &__value {
+    font-size: v.$fs-3xl;
+    font-weight: v.$fw-black;
+    color: v.$color-ink;
+  }
+
+  &__label {
+    font-size: v.$fs-md;
+    color: v.$color-ink-muted;
+    font-weight: v.$fw-semibold;
+  }
+}
+
+// Tarjetas de contenido (dashboards, listas, formularios)
+.admin-card {
+  padding: v.$space-5;
+  border: 1px solid v.$color-line;
+  border-radius: v.$radius-md;
+  background: v.$color-surface;
+
+  &__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: v.$space-2;
+    margin-bottom: v.$space-4;
+  }
+
+  &__title {
+    font-size: v.$fs-xl;
+    font-weight: v.$fw-black;
+  }
+
+  &__code {
+    font-size: v.$fs-2xl;
+    font-weight: v.$fw-black;
+  }
+
+  &__meta {
+    margin-top: 0.25rem;
+    font-size: v.$fs-md;
+    color: v.$color-ink-muted;
+  }
+
+  &__banner-meta {
+    display: flex;
+    align-items: center;
+    gap: v.$space-2;
+  }
+
+  &__total {
+    font-size: v.$fs-2xl;
+    font-weight: v.$fw-black;
+    color: v.$color-gold-ink;
+  }
+
+  &__body {
+    display: grid;
+    gap: v.$space-4;
+  }
+
+  &__link {
+    font-size: v.$fs-md;
+    font-weight: v.$fw-bold;
+    color: #b45309;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__empty {
+    color: v.$color-ink-muted;
+    font-size: v.$fs-md;
+  }
+}
+
+// Tablas del panel
+.admin-table {
+  font-size: v.$fs-md;
+
+  &__th {
+    padding-bottom: v.$space-2;
+    border-bottom: 2px solid v.$color-line;
+    text-align: left;
+    font-size: v.$fs-xs;
+    font-weight: v.$fw-black;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: v.$color-ink-muted;
+  }
+
+  &__th--center {
+    text-align: center;
+  }
+
+  &__th--right {
+    text-align: right;
+  }
+
+  &__td {
+    padding: v.$space-3 0;
+    border-bottom: 1px solid v.$color-line-soft;
+    vertical-align: middle;
+  }
+
+  &__td--center {
+    text-align: center;
+  }
+
+  &__td--right {
+    text-align: right;
+  }
+
+  &__td--soft {
+    color: v.$color-ink-muted;
+  }
+
+  &__link {
+    font-weight: v.$fw-bold;
+
+    &:hover {
+      color: v.$color-gold-ink;
+    }
+  }
+
+  &__mono {
+    display: block;
+    font-size: v.$fs-xs;
+    color: v.$color-ink-muted;
+  }
+
+  &__prod {
+    display: flex;
+    align-items: center;
+    gap: v.$space-3;
+  }
+
+  &__prod-info {
+    min-width: 0;
+  }
+
+  &__thumb {
+    width: 3rem;
+    height: 3rem;
+    flex-shrink: 0;
+    border-radius: v.$radius-sm;
+    object-fit: cover;
+    background: v.$color-line-soft;
+  }
+
+  &__thumb--empty {
+    display: inline-block;
+  }
+
+  &__actions {
+    display: inline-flex;
+    gap: v.$space-2;
+  }
+
+  &__stock-input {
+    width: 5.5rem;
+    padding: 0.375rem v.$space-2;
+    border: 1px solid #d6d3d1;
+    border-radius: v.$radius-sm;
+    font-size: v.$fs-md;
+    text-align: center;
+
+    &:focus {
+      border-color: v.$color-gold;
+      outline: none;
+    }
+  }
+}
+
+// Píldoras de estado / stock
+.admin-pill {
+  display: inline-block;
+  min-width: 2rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: v.$radius-pill;
+  font-size: v.$fs-xs;
+  font-weight: v.$fw-bold;
+  text-align: center;
+  text-transform: capitalize;
+
+  &--ok {
+    background: v.$color-success-bg;
+    color: v.$color-success-ink;
+  }
+
+  &--warn {
+    background: #fffbeb;
+    color: #92400e;
+  }
+
+  &--danger {
+    background: v.$color-danger-bg;
+    color: v.$color-danger-ink;
+  }
+}
+
+// Alertas del panel
+.admin-alert {
+  padding: v.$space-3 v.$space-4;
+  border-radius: v.$radius-md;
+  font-size: v.$fs-md;
+  font-weight: v.$fw-semibold;
+
+  &--ok {
+    background: v.$color-success-bg;
+    color: v.$color-success-ink;
+  }
+
+  &--warn {
+    background: #fffbeb;
+    color: #92400e;
+  }
+}
+
+// Buscador del panel
+.admin-search {
+  display: flex;
+  gap: v.$space-2;
+}
+
+.admin-search__input {
+  flex: 1;
+  max-width: 28rem;
+  padding: 0.5rem v.$space-4;
+  border: 1px solid #d6d3d1;
+  border-radius: v.$radius-pill;
+  font-size: v.$fs-md;
+  outline: none;
+
+  &:focus {
+    border-color: v.$color-gold;
+  }
+}
+
+// Ficha de datos de una orden
+.admin-note {
+  display: grid;
+  gap: v.$space-2;
+
+  &__dt {
+    font-size: v.$fs-xs;
+    font-weight: v.$fw-black;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: v.$color-ink-muted;
+  }
+
+  &__dd {
+    font-size: v.$fs-md;
+    color: v.$color-ink-soft;
+  }
+}
+
+// Barra de cambio de estado de una orden
+.admin-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: v.$space-2;
+  padding-top: v.$space-3;
+  border-top: 1px solid v.$color-line-soft;
+
+  &__select {
+    width: auto;
+    min-width: 10rem;
+  }
+
+  &__badge {
+    margin-left: auto;
+  }
+}
+
+.admin-form-label {
+  font-size: v.$fs-md;
+  font-weight: v.$fw-bold;
+}
+
+//iendo --------------------------------------------
+// ---------------------------------------------
+// Block: .bannerform (alta/edición de banners del carrusel)
+// ---------------------------------------------
+.bannerform {
+  grid-template-columns: 1fr;
+  gap: v.$space-4;
+
+  @include m.respond-to(lg) {
+    grid-template-columns: 1fr 22rem;
+  }
+
+  &__main {
+    padding: 0;
+    border: none;
+    background: none;
+  }
+
+  &__side {
+    padding: 0;
+    border: none;
+    background: none;
+  }
+
+  &__preview {
+    display: grid;
+    gap: v.$space-1;
+  }
+
+  &__mock {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 8rem;
+    padding: v.$space-4;
+    border-radius: v.$radius-md;
+    overflow: hidden;
+    background-color: v.$color-dark;
+    background-size: cover;
+    background-position: center;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(100deg, rgb(0 0 0 / 0.55) 20%, rgb(0 0 0 / 0.1) 70%);
+    }
+  }
+
+  &__mock-panel {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: v.$space-2;
+    justify-items: start;
+  }
+
+  &__mock-sub {
+    font-size: v.$fs-xs;
+    font-weight: v.$fw-black;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: v.$color-gold-soft;
+  }
+
+  &__mock-title {
+    font-size: v.$fs-2xl;
+    font-weight: v.$fw-black;
+    color: v.$color-white;
+  }
+
+  &__mock-cta {
+    padding: 0.375rem v.$space-3;
+    border-radius: v.$radius-pill;
+    background: v.$color-white;
+    font-size: v.$fs-xs;
+    font-weight: v.$fw-black;
+    color: v.$color-ink;
+  }
+}
+
+.stocksave {
+  margin-top: v.$space-4;
+}
+
+// ---------------------------------------------
+// Block: .adminform (alta/edición de producto)
+// ---------------------------------------------
+.adminform {
+  display: grid;
+  gap: v.$space-6;
+
+  @include m.respond-to(lg) {
+    grid-template-columns: 1fr 20rem;
+    align-items: start;
+  }
+
+  &__main {
+    display: grid;
+    gap: v.$space-4;
+    padding: v.$space-5;
+    border: 1px solid v.$color-line;
+    border-radius: v.$radius-md;
+    background: v.$color-surface;
+  }
+
+  &__side {
+    display: grid;
+    gap: v.$space-4;
+    padding: v.$space-5;
+    border: 1px solid v.$color-line;
+    border-radius: v.$radius-md;
+    background: v.$color-surface;
+    height: fit-content;
+  }
+
+  &__grid {
+    display: grid;
+    gap: v.$space-3;
+
+    @include m.respond-to(sm) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  &__group {
+    display: grid;
+    gap: 0.375rem;
+  }
+
+  &__label {
+    font-size: v.$fs-md;
+    font-weight: v.$fw-bold;
+    color: v.$color-ink;
+  }
+
+  &__input,
+  &__select,
+  &__textarea {
+    width: 100%;
+    padding: 0.5rem v.$space-3;
+    border: 1px solid #d6d3d1;
+    border-radius: v.$radius-sm;
+    font-size: v.$fs-md;
+    outline: none;
+    background: v.$color-field;
+
+    &:focus {
+      border-color: v.$color-gold;
+    }
+  }
+
+  &__textarea {
+    resize: vertical;
+  }
+
+  &__checks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: v.$space-4;
+    font-size: v.$fs-md;
+  }
+
+  &__check {
+    display: inline-flex;
+    align-items: center;
+    gap: v.$space-2;
+    font-weight: v.$fw-semibold;
+  }
+
+  &__cta {
+    display: grid;
+    gap: v.$space-2;
+  }
+
+  &__delete {
+    border: none;
+    background: none;
+    padding: 0;
+    font-size: v.$fs-md;
+    font-weight: v.$fw-bold;
+    color: v.$color-danger;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// ---------------------------------------------
+// Block: .imgup (subida de imagen de producto)
+// ---------------------------------------------
+.imgup {
+  display: grid;
+  gap: v.$space-3;
+
+  &__input {
+    width: 100%;
+    padding: 0.5rem v.$space-3;
+    border: 1px solid #d6d3d1;
+    border-radius: v.$radius-sm;
+    font-size: v.$fs-md;
+    outline: none;
+
+    &:focus {
+      border-color: v.$color-gold;
+    }
+  }
+
+  &__pick {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: v.$space-3;
+  }
+
+  &__btn {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    padding: 0.5rem v.$space-4;
+    border: 1px dashed #d6d3d1;
+    border-radius: v.$radius-md;
+    font-size: v.$fs-md;
+    font-weight: v.$fw-bold;
+    cursor: pointer;
+
+    &:hover {
+      border-color: v.$color-gold;
+      color: v.$color-gold-ink;
+    }
+  }
+
+  &__file {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  &__hint {
+    font-size: v.$fs-xs;
+    color: v.$color-ink-muted;
+  }
+
+  &__error {
+    font-size: v.$fs-md;
+    color: v.$color-danger-ink;
+  }
+
+  &__ok {
+    font-size: v.$fs-md;
+    color: v.$color-success-ink;
+    font-weight: v.$fw-bold;
+  }
+
+  &__preview {
+    width: 100%;
+    border-radius: v.$radius-md;
+    border: 1px solid v.$color-line;
+  }
+}
+
+// ---------------------------------------------
+// Block: .login (pantalla de acceso al panel)
+// ---------------------------------------------
+.login {
+  display: grid;
+  place-items: center;
+  min-height: 60vh;
+  padding: v.$space-8 v.$container-pad;
+
+  &__card {
+    width: 100%;
+    max-width: 22rem;
+    display: grid;
+    gap: v.$space-3;
+    padding: v.$space-8;
+    border: 1px solid v.$color-line;
+    border-radius: v.$radius-lg;
+    background: v.$color-surface;
+  }
+
+  &__title {
+    font-size: v.$fs-xl;
+    font-weight: v.$fw-black;
+  }
+
+  &__lead {
+    font-size: v.$fs-md;
+    color: v.$color-ink-muted;
+  }
+
+  &__error {
+    padding: v.$space-2 v.$space-3;
+    border-radius: v.$radius-sm;
+    background: v.$color-danger-bg;
+    color: v.$color-danger-ink;
+    font-size: v.$fs-md;
+    font-weight: v.$fw-bold;
+  }
+
+  &__label {
+    font-size: v.$fs-md;
+    font-weight: v.$fw-bold;
+  }
+
+  &__input {
+    width: 100%;
+    padding: 0.625rem v.$space-3;
+    border: 1px solid #d6d3d1;
+    border-radius: v.$radius-md;
+    font-size: v.$fs-md;
+    outline: none;
+
+    &:focus {
+      border-color: v.$color-gold;
+    }
+  }
+
+  &__submit {
+    margin-top: v.$space-3;
+  }
+
+  &__foot {
+    margin-top: v.$space-2;
+    font-size: v.$fs-md;
+    color: v.$color-ink-muted;
+    text-align: center;
+  }
+
+  &__foot-link {
+    font-weight: v.$fw-bold;
+    color: v.$color-gold-ink;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__optional {
+    font-size: v.$fs-xs;
+    font-weight: v.$fw-semibold;
+    color: v.$color-ink-muted;
+  }
+}

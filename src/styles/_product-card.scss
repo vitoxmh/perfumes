@@ -1,0 +1,144 @@
+// ---------------------------------------------
+// Block: .product-card (tarjeta de catálogo)
+// ---------------------------------------------
+@use "variables" as v;
+@use "mixins" as m;
+
+.product-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid v.$color-line;
+  border-radius: v.$radius-md;
+  background: v.$color-surface;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: v.$shadow-hover;
+  }
+
+  &__flag {
+    @include m.flag;
+  }
+
+  &__flag--new {
+    top: v.$space-2;
+    left: v.$space-2;
+    background: v.$color-gold-soft;
+    color: v.$color-gold-ink;
+  }
+
+  &__flag--sale {
+    top: v.$space-2;
+    right: v.$space-2;
+    background: v.$color-danger;
+    color: v.$color-white;
+  }
+
+  &__media {
+    display: block;
+    overflow: hidden;
+  }
+
+  &__media-frame {
+    aspect-ratio: 1;
+    width: 100%;
+
+    img,
+    .placeholder {
+      height: 100%;
+      width: 100%;
+    }
+
+    img {
+      object-fit: cover;
+    }
+  }
+
+  &__info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: v.$space-1;
+    padding: v.$space-3;
+  }
+
+  &__installments {
+    font-size: 11px;
+    font-weight: v.$fw-bold;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: v.$color-ink-muted;
+
+    strong {
+      color: v.$color-ink-soft;
+    }
+  }
+
+  &__name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    font-size: v.$fs-md;
+    font-weight: v.$fw-bold;
+    line-height: 1.25;
+    color: v.$color-ink;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__rating {
+    font-size: v.$fs-xs;
+    color: #f59e0b;
+  }
+
+  &__rating-count {
+    margin-left: v.$space-1;
+    color: v.$color-ink-muted;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: v.$space-2;
+    margin-top: auto;
+    padding-top: v.$space-2;
+  }
+
+  &__price {
+    font-size: v.$fs-base;
+    font-weight: v.$fw-black;
+    color: v.$color-ink;
+  }
+
+  &__add {
+    margin-left: auto;
+    min-width: 2rem;
+    height: 2rem;
+    padding-inline: v.$space-2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    border: none;
+    border-radius: v.$radius-pill;
+    background: v.$color-dark;
+    color: v.$color-white;
+    font-size: v.$fs-xs;
+    font-weight: v.$fw-bold;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: #9a3412; // amber-800
+    }
+  }
+
+  &__add--added {
+    background: v.$color-success;
+  }
+}

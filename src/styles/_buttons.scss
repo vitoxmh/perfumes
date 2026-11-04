@@ -1,0 +1,84 @@
+// ---------------------------------------------
+// Blocks: .btn (botones e hipervínculos de acción) y .addtocart (ficha de producto)
+// ---------------------------------------------
+@use "variables" as v;
+@use "mixins" as m;
+
+.btn {
+  display: inline-block;
+  padding: v.$space-3 v.$space-6;
+  border: none;
+  border-radius: v.$radius-pill;
+  background: v.$color-dark;
+  color: v.$color-white;
+  font-size: v.$fs-md;
+  font-weight: v.$fw-bold;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s ease, opacity 0.2s ease;
+  @include m.focus-ring;
+
+  &:hover {
+    background: #9a3412; // amber-800
+  }
+
+  &--outline {
+    background: none;
+    border: 1px solid #d6d3d1;
+    color: v.$color-ink;
+
+    &:hover {
+      background: v.$color-line-soft;
+    }
+  }
+
+  &--block {
+    display: block;
+    width: 100%;
+  }
+
+  &--compact {
+    padding: 0.375rem v.$space-3;
+    font-size: v.$fs-sm;
+  }
+
+  &--disabled,
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.addtocart {
+  margin-top: v.$space-6;
+
+  &__purchase {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: v.$space-3;
+  }
+
+  &__success {
+    display: flex;
+    align-items: center;
+    gap: v.$space-2;
+    padding: v.$space-3 v.$space-4;
+    border: 1px solid v.$color-success-line;
+    border-radius: v.$radius-md;
+    background: v.$color-success-bg;
+    color: v.$color-success-ink;
+    font-size: v.$fs-md;
+    font-weight: v.$fw-bold;
+  }
+
+  &__links {
+    display: flex;
+    gap: v.$space-2;
+    margin-top: v.$space-3;
+
+    > * {
+      flex: 1;
+    }
+  }
+}

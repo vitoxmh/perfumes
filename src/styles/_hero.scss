@@ -1,0 +1,157 @@
+// ---------------------------------------------
+// Block: .hero (carrusel de portada)
+// ---------------------------------------------
+@use "variables" as v;
+@use "mixins" as m;
+
+.hero {
+  position: relative;
+  border-radius: v.$radius-lg;
+  overflow: hidden;
+
+  &__stage {
+    position: relative;
+    height: 260px;
+
+    @include m.respond-to(sm) {
+      height: 360px;
+    }
+  }
+
+  &__slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: v.$space-3;
+    padding-inline: v.$space-8;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.7s ease-in-out;
+
+    &[aria-hidden="false"] {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    @include m.respond-to(sm) {
+      padding-inline: v.$space-14;
+    }
+  }
+
+  &__slide--amethyst {
+    background: linear-gradient(115deg, #241438 0%, #5b2a86 55%, #8a5bbd 100%);
+  }
+
+  &__slide--spring {
+    background: linear-gradient(115deg, #123a2c 0%, #2f7d5b 55%, #6db98c 100%);
+  }
+
+  &__slide--khamrah {
+    background: linear-gradient(115deg, #33210b 0%, #8a5a1b 55%, #c99a3f 100%);
+  }
+
+  // Banner del panel con imagen de fondo (la URL llega como estilo inline dinámico).
+  &__slide--image {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-color: v.$color-dark;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(100deg, rgb(0 0 0 / 0.55) 20%, rgb(0 0 0 / 0.1) 70%);
+    }
+
+    // El texto y el botón quedan sobre el velo oscuro.
+    > * {
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  &__subtitle {
+    font-size: 12px;
+    font-weight: v.$fw-black;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: v.$color-gold-soft;
+  }
+
+  &__title {
+    max-width: 32rem;
+    font-size: v.$fs-3xl;
+    font-weight: v.$fw-black;
+    color: v.$color-white;
+
+    @include m.respond-to(sm) {
+      font-size: 3rem;
+    }
+  }
+
+  &__cta {
+    display: inline-block;
+    padding: v.$space-2 v.$space-5;
+    border-radius: v.$radius-pill;
+    background: v.$color-white;
+    color: v.$color-ink;
+    font-size: v.$fs-md;
+    font-weight: v.$fw-bold;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: v.$color-gold-soft;
+    }
+  }
+
+  &__dots {
+    position: absolute;
+    bottom: v.$space-4;
+    left: 50%;
+    display: flex;
+    gap: v.$space-2;
+    transform: translateX(-50%);
+  }
+
+  &__dot {
+    width: 1.5rem;
+    height: 0.5rem;
+    border: none;
+    border-radius: v.$radius-pill;
+    background: rgb(255 255 255 / 0.4);
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &--active {
+      background: v.$color-on-dark-gold;
+    }
+  }
+
+  &__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: v.$space-2 v.$space-3;
+    border: none;
+    border-radius: v.$radius-pill;
+    background: rgb(255 255 255 / 0.2);
+    color: v.$color-white;
+    cursor: pointer;
+
+    &:hover {
+      background: rgb(255 255 255 / 0.4);
+    }
+
+    &--prev {
+      left: v.$space-2;
+    }
+
+    &--next {
+      right: v.$space-2;
+    }
+  }
+}

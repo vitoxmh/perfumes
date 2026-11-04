@@ -1,0 +1,36 @@
+// ---------------------------------------------
+// Block: .topbar (cinta de anuncios en movimiento)
+// ---------------------------------------------
+@use "variables" as v;
+@use "mixins" as m;
+
+.topbar {
+  overflow: hidden;
+  background: v.$color-dark;
+  padding: 0.375rem 0;
+  color: v.$color-gold-soft;
+
+  &__track {
+    display: flex;
+    width: max-content;
+    min-width: 100%;
+    font-size: v.$fs-xs;
+    font-weight: v.$fw-bold;
+    will-change: transform;
+    animation: topbar-marquee 45s linear infinite;
+  }
+
+  &__item {
+    flex-shrink: 0;
+    padding-inline: v.$space-8;
+  }
+}
+
+@keyframes topbar-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}

@@ -1,0 +1,125 @@
+// ---------------------------------------------
+// Blocks: .product-grid (grilla) y .section (secciones de portada)
+// ---------------------------------------------
+@use "variables" as v;
+@use "mixins" as m;
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: v.$space-3;
+
+  @include m.respond-to(sm) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include m.respond-to(lg) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @include m.respond-to(xl) {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.section {
+  padding-block: v.$space-8;
+
+  &__inner {
+    @include m.container;
+  }
+
+  &__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: v.$space-5;
+  }
+
+  &__title {
+    font-size: v.$fs-2xl;
+    font-weight: v.$fw-black;
+    letter-spacing: -0.025em;
+    color: v.$color-ink;
+  }
+
+  &__subtitle {
+    margin-top: v.$space-1;
+    font-size: v.$fs-md;
+    color: v.$color-ink-muted;
+  }
+
+  &__more {
+    font-size: v.$fs-md;
+    font-weight: v.$fw-bold;
+    color: #b45309; // amber-700
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// ---------------------------------------------
+// Block: .home (estructura de portada)
+// ---------------------------------------------
+.home {
+  &__hero {
+    max-width: v.$max-width;
+    margin: 0 auto;
+    padding-block: v.$space-6;
+    padding-inline: v.$container-pad;
+  }
+}
+
+// ---------------------------------------------
+// Block: .wanted ("Lo más buscado" sobre fondo oscuro)
+// ---------------------------------------------
+.wanted {
+  margin-inline: auto;
+  max-width: v.$max-width;
+  padding: v.$space-8 v.$space-6;
+  border-radius: v.$radius-lg;
+  background: v.$color-dark;
+  display: block;
+
+  &__title {
+    margin-bottom: v.$space-1;
+    font-size: v.$fs-2xl;
+    font-weight: v.$fw-black;
+    color: v.$color-white;
+  }
+
+  &__subtitle {
+    margin-bottom: v.$space-5;
+    font-size: v.$fs-md;
+    color: v.$color-on-dark-soft;
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: v.$space-2;
+
+    @include m.respond-to(sm) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  &__card {
+    display: block;
+    padding: v.$space-3 v.$space-4;
+    border: 1px solid #44403c; // stone-700
+    border-radius: v.$radius-md;
+    background: rgb(41 37 36 / 0.6);
+    color: v.$color-on-dark;
+    font-size: v.$fs-md;
+    font-weight: v.$fw-bold;
+    transition: border-color 0.2s ease, color 0.2s ease;
+
+    &:hover {
+      border-color: v.$color-gold;
+      color: #fcd34d; // amber-300
+    }
+  }
+}

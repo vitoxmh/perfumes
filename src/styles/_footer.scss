@@ -1,0 +1,92 @@
+// ---------------------------------------------
+// Block: .footer
+// ---------------------------------------------
+@use "variables" as v;
+@use "mixins" as m;
+
+.footer {
+  margin-top: v.$space-16;
+  border-top: 1px solid #292524;
+  background: v.$color-dark;
+  color: v.$color-on-dark-soft;
+
+  &__grid {
+    display: grid;
+    gap: v.$space-8;
+    padding: v.$space-12 v.$container-pad;
+    max-width: v.$max-width;
+    margin-inline: auto;
+
+    @include m.respond-to(sm) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include m.respond-to(lg) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: v.$space-2;
+    margin-bottom: v.$space-3;
+    font-size: v.$fs-lg;
+    font-weight: v.$fw-black;
+    letter-spacing: 0.1em;
+    color: v.$color-white;
+
+    &-badge {
+      display: inline-block;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f59e0b, #92400e);
+    }
+  }
+
+  &__brand-accent {
+    color: #fbbf24;
+  }
+
+  &__tagline {
+    font-size: v.$fs-md;
+    line-height: 1.6;
+    color: v.$color-ink-muted;
+  }
+
+  &__title {
+    margin-bottom: v.$space-3;
+    font-weight: v.$fw-bold;
+    color: v.$color-white;
+  }
+
+  &__list {
+    display: grid;
+    gap: v.$space-2;
+    font-size: v.$fs-md;
+  }
+
+  &__link:hover {
+    color: v.$color-on-dark-gold;
+  }
+
+  &__contact {
+    font-size: v.$fs-md;
+    color: v.$color-ink-muted;
+  }
+
+  &__note {
+    margin-top: v.$space-4;
+    font-size: v.$fs-xs;
+    color: #78716c; // stone-500
+  }
+
+  &__bottom {
+    padding: v.$space-4 0;
+    border-top: 1px solid #292524;
+    text-align: center;
+    font-size: v.$fs-xs;
+    color: #78716c;
+  }
+}

@@ -1,0 +1,125 @@
+// ---------------------------------------------
+// Blocks: .breadcrumb, .catalog (sidebar + main), .filters, .pagination
+// ---------------------------------------------
+@use "variables" as v;
+@use "mixins" as m;
+
+.breadcrumb {
+  display: flex;
+  margin-bottom: v.$space-4;
+  font-size: v.$fs-xs;
+  color: v.$color-ink-muted;
+
+  // Enlace a la marca dentro de la ficha de producto
+  &--brand {
+    margin-top: -1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  &__link:hover {
+    text-decoration: underline;
+  }
+
+  &__sep {
+    margin-inline: v.$space-1;
+  }
+
+  &__current {
+    font-weight: v.$fw-bold;
+    color: v.$color-ink-soft;
+  }
+}
+
+.catalog {
+  display: flex;
+  flex-direction: column;
+  gap: v.$space-8;
+
+  @include m.respond-to(lg) {
+    flex-direction: row;
+  }
+
+  &__sidebar {
+    width: 100%;
+    flex-shrink: 0;
+
+    @include m.respond-to(lg) {
+      width: 14rem;
+    }
+  }
+
+  &__main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__count {
+    margin-bottom: v.$space-4;
+    font-size: v.$fs-md;
+    color: v.$color-ink-muted;
+  }
+}
+
+.filters {
+  display: grid;
+  gap: v.$space-4;
+  font-size: v.$fs-md;
+
+  &__group {
+    padding-bottom: v.$space-4;
+    border-bottom: 1px solid v.$color-line-soft;
+  }
+
+  &__title {
+    margin-bottom: v.$space-2;
+    font-size: v.$fs-xs;
+    font-weight: v.$fw-black;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: v.$color-ink-muted;
+  }
+
+  &__list {
+    display: grid;
+    gap: 0.375rem;
+  }
+
+  &__option {
+    color: v.$color-ink-soft;
+
+    &:hover {
+      color: v.$color-ink;
+    }
+  }
+
+  &__option--active {
+    font-weight: v.$fw-bold;
+    color: v.$color-gold-ink;
+  }
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: v.$space-2;
+  margin-top: v.$space-8;
+  font-size: v.$fs-md;
+
+  &__page {
+    padding: 0.375rem v.$space-3;
+    border: 1px solid #d6d3d1;
+    border-radius: v.$radius-md;
+
+    &:hover {
+      background: v.$color-line-soft;
+    }
+  }
+
+  &__page--current {
+    background: v.$color-dark;
+    border-color: v.$color-dark;
+    color: v.$color-white;
+    font-weight: v.$fw-bold;
+  }
+}

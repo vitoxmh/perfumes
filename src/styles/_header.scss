@@ -1,0 +1,244 @@
+// ---------------------------------------------
+// Blocks: .header (sticky) y .megamenu (desplegable)
+// ---------------------------------------------
+@use "variables" as v;
+@use "mixins" as m;
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgb(255 255 255 / 0.95);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid v.$color-line;
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    gap: v.$space-3;
+    padding: v.$space-3 v.$container-pad;
+    max-width: v.$max-width;
+    margin-inline: auto;
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: v.$space-2;
+    font-size: v.$fs-lg;
+    font-weight: v.$fw-black;
+    letter-spacing: 0.1em;
+    color: v.$color-ink;
+    white-space: nowrap;
+
+    &-badge {
+      display: inline-block;
+      width: 1.75rem;
+      height: 1.75rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f59e0b, #92400e);
+    }
+
+    &-accent {
+      color: v.$color-gold;
+    }
+  }
+
+  &__search {
+    display: none;
+    width: 100%;
+    max-width: 28rem;
+    margin-left: auto;
+
+    @include m.respond-to(md) {
+      display: block;
+    }
+  }
+
+  &__search-input {
+    width: 100%;
+    padding: v.$space-2 v.$space-4;
+    border: 1px solid #d6d3d1;
+    border-radius: v.$radius-pill;
+    background: v.$color-field;
+    font-size: v.$fs-md;
+    outline: none;
+
+    &:focus {
+      border-color: v.$color-gold;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: v.$space-1;
+    margin-left: auto;
+    font-size: v.$fs-md;
+
+    @include m.respond-to(md) {
+      margin-left: 0;
+    }
+  }
+
+  &__nav-link {
+    padding: v.$space-2 v.$space-3;
+    border-radius: v.$radius-md;
+    font-weight: v.$fw-bold;
+
+    &:hover {
+      background: v.$color-line-soft;
+    }
+  }
+
+  &__nav-link--tracking {
+    display: none;
+
+    @include m.respond-to(lg) {
+      display: block;
+    }
+  }
+
+  &__nav-link--cart {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  &__nav-link--admin {
+    color: v.$color-gold-ink;
+  }
+
+  &__user {
+    display: inline-flex;
+    align-items: center;
+    gap: v.$space-1;
+  }
+
+  &__nav-user {
+    display: inline-flex;
+    padding: v.$space-2 v.$space-3;
+    border-radius: v.$radius-md;
+    font-weight: v.$fw-bold;
+    font-size: v.$fs-md;
+    color: v.$color-ink;
+    white-space: nowrap;
+  }
+
+  &__signout {
+    padding: v.$space-2 v.$space-2;
+    border: none;
+    background: none;
+    border-radius: v.$radius-md;
+    font-size: v.$fs-md;
+    font-weight: v.$fw-bold;
+    color: v.$color-ink-muted;
+    cursor: pointer;
+
+    &:hover {
+      background: v.$color-line-soft;
+      color: v.$color-ink;
+    }
+  }
+
+  &__cart-icon {
+    display: block;
+  }
+
+  &__cart-count {
+    min-width: 1.25rem;
+    padding: 0.125rem 0.375rem;
+    border-radius: v.$radius-pill;
+    background: v.$color-dark;
+    color: v.$color-white;
+    font-size: v.$fs-xs;
+    font-weight: v.$fw-bold;
+    text-align: center;
+  }
+
+  &__menu {
+    position: relative;
+    border-top: 1px solid v.$color-line-soft;
+  }
+
+  &__menu-row {
+    display: flex;
+    gap: v.$space-1;
+    overflow-x: auto;
+    max-width: v.$max-width;
+    margin-inline: auto;
+    padding-inline: v.$container-pad;
+    font-size: v.$fs-md;
+    font-weight: v.$fw-bold;
+  }
+
+  &__menu-trigger,
+  &__menu-link {
+    padding: 0.625rem v.$space-3;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: v.$fw-bold;
+    white-space: nowrap;
+    @include m.focus-ring;
+
+    &:hover {
+      color: v.$color-gold-ink;
+    }
+  }
+
+  &__menu-link--stores {
+    display: none;
+
+    @include m.respond-to(sm) {
+      display: inline;
+    }
+  }
+}
+
+.megamenu {
+  position: absolute;
+  inset-inline: 0;
+  top: 100%;
+  z-index: 30;
+  background: v.$color-white;
+  border-bottom: 1px solid v.$color-line;
+  box-shadow: v.$shadow-card;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: v.$space-6;
+    padding: v.$space-6;
+    max-width: 64rem;
+    margin-inline: auto;
+    font-size: v.$fs-md;
+
+    @include m.respond-to(sm) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  &__title {
+    margin-bottom: v.$space-2;
+    font-weight: v.$fw-black;
+  }
+
+  &__list {
+    display: grid;
+    gap: v.$space-1 0;
+  }
+
+  &__item a {
+    color: v.$color-ink-soft;
+    font-weight: v.$fw-semibold;
+
+    &:hover {
+      color: v.$color-gold-ink;
+    }
+  }
+
+  &__item-letter {
+    text-transform: uppercase;
+  }
+}
